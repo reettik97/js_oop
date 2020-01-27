@@ -1,33 +1,37 @@
-console.log(this.document === document); // Output
+console.log(this.document === document); // Output :  true
 
-console.log(this === window); //Output
+console.log(this === window); //Output : true
 
 var myFunction = function() {
   console.log(this);
 };
-myFunction(); // Output
+myFunction(); // Output : window
 
 function f1() {
   "use strict";
   return this;
 }
-console.log(f1() === window); //Output
+console.log(f1() === window); //Output : false; (becouse this doesnot exist, return undefined)
 
 function foo() {
-  console.log("Simple function call");
+  console.log("Simple function call");   
   console.log(this === window);
 }
 
-foo(); //Output ??
+foo(); //Output :  
+//"Simple function call"
+//true;
+
+
 console.log(this === window)(
-  // Output
+  // Output : true;
 
   // This for IIFE
-  function() {
+function() {
     console.log("Anonymous function invocation");
     console.log(this === window);
   }
-)(); //Output
+)(); //Output :  
 
 // This for IIFE in strict mode
 function foo() {
@@ -36,13 +40,19 @@ function foo() {
   console.log(this === window);
 }
 
-foo(); // Output
+foo(); // Output :
+//Simle function calls;
+//false;
 
 var myObject = {};
 myObject.someMethod = function() {
   console.log(this);
 };
-myObject.someMethod(); //Value Of This
+myObject.someMethod();
+ //output : myObject = {someMethod = function() {
+  // console.log(this);
+// } }
+
 
 // This refers to the New Instance
 
@@ -56,11 +66,12 @@ function Person(fn, ln) {
 }
 
 let person = new Person("John", "Reed");
-person.displayName(); // Output
+person.displayName(); // Output  : `Name: John Reed`;
 let person2 = new Person("Paul", "Adams");
-person2.displayName(); // Output
+person2.displayName(); // Output : `Name: Paul Adams`;
 
 //This refers to the invoker Object
+
 function foo() {
   "use strict";
   console.log("Simple function call");
@@ -71,14 +82,18 @@ let user = {
   count: 10,
   foo: foo,
   foo1: function() {
-    console.log(this === window);
+    console.log(this === window); 
   }
 };
 
-user.foo(); // Output
-let fun1 = user.foo1;
-fun1(); // Output ??
-user.foo1(); // Output ??
+user.foo(); // Output : 
+//"Simple function call"
+//false   (this points to user object)
+let fun1 = user.foo1;  
+fun1(); 
+// Output : true  
+user.foo1(); 
+// Output : false 
 
 //this will call apply and bind
 
@@ -90,13 +105,13 @@ var module = {
   }
 };
 
-module.getX(); // Output ??
+module.getX(); // Output : 81
 
 var retrieveX = module.getX;
-retrieveX(); //Output ??
+retrieveX(); //Output : 9 
 
 var boundGetX = retrieveX.bind(module);
-boundGetX(); // Output ??
+boundGetX(); // Output : 81
 
 // Call with new constructor
 
@@ -110,11 +125,11 @@ function Person(fn, ln) {
 }
 
 let person = new Person("John", "Reed");
-person.displayName(); // Output
+person.displayName(); // Output : `Name: John Reed`
 let person2 = new Person("Paul", "Adams");
-person2.displayName(); // Output
+person2.displayName(); //Output : `Name: Paul Adams`
 
-person.displayName.call(person2); // Output ??
+person.displayName.call(person2); // Output : `Name: Paul Adams`
 
 // Guess the output of the following
 
@@ -122,34 +137,55 @@ const a = {
   a: "a"
 };
 const obj = {
-  getThis: () => this,
+  getThis: () => this,  
   getThis2() {
     return this;
   }
 };
-obj.getThis3 = obj.getThis.bind(obj);
+obj.getThis3 = obj.getThis.bind(obj); 
 obj.getThis4 = obj.getThis2.bind(obj);
 
-// Output
-obj.getThis();
+obj.getThis(); // Output : window
 
-// Output
-obj.getThis.call(a);
+obj.getThis.call(a); // Output :  window
 
-// Output
-obj.getThis2();
+obj.getThis2();  
+//output :
+// obj {
+//   getThis: function;
+//   getThis2: function;
+//   getThis3: function;
+//   getThis4: function;
+// }
 
-// Output
+
 obj.getThis2.call(a);
+// Output:
+// { a :"a"}
 
-// Output
 obj.getThis3();
+// Output : window
 
-// Output
 obj.getThis3.call(a);
+// Output : window
 
-// Output
+
 obj.getThis4();
+//output :
+// obj {
+//   getThis: function;
+//   getThis2: function;
+//   getThis3: function;
+//   getThis4: function;
+// }
 
-// Output
+
+
 obj.getThis4.call(a);
+//output :
+// obj {
+//   getThis: function;
+//   getThis2: function;
+//   getThis3: function;
+//   getThis4: function;
+// }
