@@ -31,7 +31,6 @@ function nextbook(books) {
   return;
 }
 
-
 class Book {
   constructor(title, genre, author, read = false, readDate = '') {
     this.title = title;
